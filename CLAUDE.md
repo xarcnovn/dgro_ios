@@ -8,6 +8,8 @@ DON'T REINVENT THE WHEEL - ALL THE KNOWLEDGE NEEDED FOR THIS PROJECT IS IN THE D
 
 We're building a very simple iOS app - an MCP client that can connect to any MCP server based on @swift_mcp_client.md
 
+Do only things you're directly asked to, don't add or remove anything additional
+
 Don't make mistakes
 
 Always use the latest stable dependencies and libraries

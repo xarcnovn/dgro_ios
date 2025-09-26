@@ -1,0 +1,31 @@
+name: MCPiOSClient
+options:
+  bundleIdPrefix: com.mcpclient
+  deploymentTarget:
+    iOS: 16.0
+packages:
+  MCPClient:
+    path: .
+targets:
+  MCPiOSClient:
+    type: application
+    platform: iOS
+    deploymentTarget: 16.0
+    sources:
+      - path: MCPiOSClientApp
+        type: group
+      - path: Sources/MCPiOSClient
+        type: group
+    info:
+      path: MCPiOSClientApp/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.mcpclient.ios
+        PRODUCT_NAME: MCPiOSClient
+        DEVELOPMENT_TEAM: ""
+        CODE_SIGN_STYLE: Automatic
+        SWIFT_VERSION: 6.0
+        INFOPLIST_FILE: MCPiOSClientApp/Info.plist
+    dependencies:
+      - package: MCPClient
+        product: MCPiOSClient
