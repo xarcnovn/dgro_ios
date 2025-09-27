@@ -1,0 +1,379 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0F96B78850D91FDC1E04A9C2 /* ChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479A32584B8BFCC5E130FFDD /* ChatInputView.swift */; };
+		2AD82E117B381745A237FFB5 /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED553625F39C37708861A01 /* ChatMessageView.swift */; };
+		35C337A279D2D9EBF79646B2 /* ServerConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912ABE95E1A399A326D68C66 /* ServerConfigView.swift */; };
+		65A898DF09A64372F99C7361 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89A1B47F26C1ABA5445364F /* ChatMessage.swift */; };
+		87D12F051041EA461F88AAEB /* AnthropicChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6C134E2CD125C91651E099 /* AnthropicChatManager.swift */; };
+		9844AA27A236C5B95868B149 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D268934D8AAACCE4A42D415E /* ChatView.swift */; };
+		C286F1DCCCC4E0E8A01A7C0C /* MCPiOSClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03CE454C4032BE21117CE6 /* MCPiOSClientApp.swift */; };
+		F238364B0583C98C98844F63 /* MCPiOSClient in Frameworks */ = {isa = PBXBuildFile; productRef = 8F5FF62E7679B1E5D005A671 /* MCPiOSClient */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0B53FF70CEB2EA98C765C63B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1ED553625F39C37708861A01 /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
+		479A32584B8BFCC5E130FFDD /* ChatInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputView.swift; sourceTree = "<group>"; };
+		732121A7AEF2A66BC43E4F92 /* MCPApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MCPApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		912ABE95E1A399A326D68C66 /* ServerConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfigView.swift; sourceTree = "<group>"; };
+		A3F85F85EFE098EC16E0CF9E /* ios_mcp_clean_2609 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios_mcp_clean_2609; path = .; sourceTree = SOURCE_ROOT; };
+		B89A1B47F26C1ABA5445364F /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		BC6C134E2CD125C91651E099 /* AnthropicChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnthropicChatManager.swift; sourceTree = "<group>"; };
+		D268934D8AAACCE4A42D415E /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		DD03CE454C4032BE21117CE6 /* MCPiOSClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPiOSClientApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		418A605E59CB821EE652B262 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F238364B0583C98C98844F63 /* MCPiOSClient in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4CD5EDE95B6338DB924657C0 = {
+			isa = PBXGroup;
+			children = (
+				8B300E41A5372FD88E5F6E7A /* MCPiOSClientApp */,
+				B6D8567816F415F6245EB3EE /* Packages */,
+				EF509BC01AD0825723FF523E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8B300E41A5372FD88E5F6E7A /* MCPiOSClientApp */ = {
+			isa = PBXGroup;
+			children = (
+				0B53FF70CEB2EA98C765C63B /* Info.plist */,
+				DD03CE454C4032BE21117CE6 /* MCPiOSClientApp.swift */,
+				F2F814CB30500E1A23B47931 /* Models */,
+				D7A474125A056951CB441D8D /* Views */,
+			);
+			path = MCPiOSClientApp;
+			sourceTree = "<group>";
+		};
+		B6D8567816F415F6245EB3EE /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				A3F85F85EFE098EC16E0CF9E /* ios_mcp_clean_2609 */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		D7A474125A056951CB441D8D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				479A32584B8BFCC5E130FFDD /* ChatInputView.swift */,
+				1ED553625F39C37708861A01 /* ChatMessageView.swift */,
+				D268934D8AAACCE4A42D415E /* ChatView.swift */,
+				912ABE95E1A399A326D68C66 /* ServerConfigView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EF509BC01AD0825723FF523E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				732121A7AEF2A66BC43E4F92 /* MCPApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F2F814CB30500E1A23B47931 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BC6C134E2CD125C91651E099 /* AnthropicChatManager.swift */,
+				B89A1B47F26C1ABA5445364F /* ChatMessage.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		45254B211BC35F886531CF7B /* MCPApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCC749235513D2D376461E7C /* Build configuration list for PBXNativeTarget "MCPApp" */;
+			buildPhases = (
+				D1F1B834126F513E98DB194A /* Sources */,
+				418A605E59CB821EE652B262 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MCPApp;
+			packageProductDependencies = (
+				8F5FF62E7679B1E5D005A671 /* MCPiOSClient */,
+			);
+			productName = MCPApp;
+			productReference = 732121A7AEF2A66BC43E4F92 /* MCPApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		74E7597685AC9E7D9B7205CE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					45254B211BC35F886531CF7B = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C559A5C2CA1991D72E0C4916 /* Build configuration list for PBXProject "MCPApp" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 4CD5EDE95B6338DB924657C0;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3FE9B96FB6FC1129A75BA817 /* XCLocalSwiftPackageReference "." */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				45254B211BC35F886531CF7B /* MCPApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D1F1B834126F513E98DB194A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87D12F051041EA461F88AAEB /* AnthropicChatManager.swift in Sources */,
+				0F96B78850D91FDC1E04A9C2 /* ChatInputView.swift in Sources */,
+				65A898DF09A64372F99C7361 /* ChatMessage.swift in Sources */,
+				2AD82E117B381745A237FFB5 /* ChatMessageView.swift in Sources */,
+				9844AA27A236C5B95868B149 /* ChatView.swift in Sources */,
+				C286F1DCCCC4E0E8A01A7C0C /* MCPiOSClientApp.swift in Sources */,
+				35C337A279D2D9EBF79646B2 /* ServerConfigView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A9CD29DD49283CDD8874B3E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = MCPiOSClientApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MODULE_NAME = MCPApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mcpclient.ios;
+				PRODUCT_NAME = MCPApp;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		36AB533281C049D0E0C67FBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = MCPiOSClientApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MODULE_NAME = MCPApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mcpclient.ios;
+				PRODUCT_NAME = MCPApp;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A01253202D215FBE2D5576A6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		EDFE8166833B279E0B44D6CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C559A5C2CA1991D72E0C4916 /* Build configuration list for PBXProject "MCPApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A01253202D215FBE2D5576A6 /* Debug */,
+				EDFE8166833B279E0B44D6CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DCC749235513D2D376461E7C /* Build configuration list for PBXNativeTarget "MCPApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36AB533281C049D0E0C67FBE /* Debug */,
+				2A9CD29DD49283CDD8874B3E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		3FE9B96FB6FC1129A75BA817 /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8F5FF62E7679B1E5D005A671 /* MCPiOSClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MCPiOSClient;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 74E7597685AC9E7D9B7205CE /* Project object */;
+}

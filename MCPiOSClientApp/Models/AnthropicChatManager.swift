@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import SwiftAnthropic
-import MCPClient
+@preconcurrency import SwiftAnthropic
 import MCPiOSClient
+import MCP
 
 @MainActor
 final class AnthropicChatManager: ObservableObject {
@@ -20,12 +20,12 @@ final class AnthropicChatManager: ObservableObject {
     @Published var anthropicAPIKey: String = ""
 
     private var service: AnthropicService?
-    private var mcpClient: MCPClient?
+    private var mcpClient: Client?
     private var tools: [MessageParameter.Tool] = []
 
     func configure(apiKey: String) {
         anthropicAPIKey = apiKey
-        service = AnthropicServiceFactory.service(apiKey: apiKey)
+        service = AnthropicServiceFactory.service(apiKey: apiKey, betaHeaders: nil)
     }
 
     func connectToServer(url: String) async {
@@ -45,11 +45,10 @@ final class AnthropicChatManager: ObservableObject {
                 streaming: true  // Enable Server-Sent Events for real-time updates
             )
 
-            mcpClient = try await MCPClient(
-                info: .init(name: "MCPiOSClient", version: "1.0.0"),
-                transport: transport,
-                capabilities: .init()
-            )
+            // Create client and connect
+            let client = Client(name: "MCPiOSClient", version: "1.0.0")
+            _ = try await client.connect(transport: transport)
+            mcpClient = client
 
             // Discover available tools
             try await setupTools()
@@ -91,9 +90,9 @@ final class AnthropicChatManager: ObservableObject {
         var messageHistory: [MessageParameter.Message] = messages.compactMap { message in
             switch message.role {
             case .user:
-                return .init(role: .user, content: [.text(message.content)])
+                return .init(role: .user, content: .text(message.content))
             case .assistant:
-                return .init(role: .assistant, content: [.text(message.content)])
+                return .init(role: .assistant, content: .text(message.content))
             case .tool:
                 // Skip tool messages in history as they're handled differently in Anthropic
                 return nil
@@ -113,20 +112,26 @@ final class AnthropicChatManager: ObservableObject {
             let response = try await service.createMessage(messageParameter)
 
             // Check if the response uses a tool
-            if let toolUse = response.content.first(where: { content in
-                if case .toolUse = content {
-                    return true
+            var hasToolUse = false
+            var toolUse: MessageResponse.Content.ToolUse?
+
+            for content in response.content {
+                if case .toolUse(let tu) = content {
+                    hasToolUse = true
+                    toolUse = tu
+                    break
                 }
-                return false
-            })?.asToolUse {
+            }
+
+            if hasToolUse, let toolUse = toolUse {
                 // Handle tool use
                 await handleToolUse(toolUse: toolUse, messageHistory: messageHistory)
             } else {
                 // Regular text response
                 let assistantMessage = response.content.compactMap { content -> String? in
                     switch content {
-                    case .text(let text):
-                        return text
+                    case .text(let textAndCitations):
+                        return textAndCitations.0  // Get the text part of the tuple
                     default:
                         return nil
                     }
@@ -142,7 +147,7 @@ final class AnthropicChatManager: ObservableObject {
         isLoading = false
     }
 
-    private func handleToolUse(toolUse: MessageParameter.Message.Content.ToolUse, messageHistory: [MessageParameter.Message]) async {
+    private func handleToolUse(toolUse: MessageResponse.Content.ToolUse, messageHistory: [MessageParameter.Message]) async {
         guard let mcpClient = mcpClient else {
             messages.append(ChatMessage(role: .assistant, content: "No MCP client available for tool execution"))
             return
@@ -161,8 +166,8 @@ final class AnthropicChatManager: ObservableObject {
                 switch content {
                 case .text(let text):
                     return text
-                case .image(let image):
-                    return "Image: \(image.source)"
+                case .image(_):
+                    return "Image: (base64 data)"
                 default:
                     return nil
                 }
@@ -178,19 +183,23 @@ final class AnthropicChatManager: ObservableObject {
         }
     }
 
-    private func sendToolResultMessage(toolUse: MessageParameter.Message.Content.ToolUse, result: String, previousHistory: [MessageParameter.Message]) async {
+    private func sendToolResultMessage(toolUse: MessageResponse.Content.ToolUse, result: String, previousHistory: [MessageParameter.Message]) async {
         guard let service = service else { return }
 
         // Build message history including the tool use and result
         var messageHistory = previousHistory
 
         // Add the assistant's tool use
-        messageHistory.append(.init(role: .assistant, content: [.toolUse(toolUse)]))
+        messageHistory.append(.init(role: .assistant, content: .list([
+            .toolUse(toolUse.id, toolUse.name, toolUse.input)
+        ])))
 
         // Add the tool result
         messageHistory.append(.init(
             role: .user,
-            content: [.toolResult(.init(toolUseID: toolUse.id, content: result))]
+            content: .list([
+                .toolResult(toolUse.id, result)
+            ])
         ))
 
         // Continue the conversation
@@ -206,8 +215,8 @@ final class AnthropicChatManager: ObservableObject {
 
             let assistantMessage = response.content.compactMap { content -> String? in
                 switch content {
-                case .text(let text):
-                    return text
+                case .text(let textAndCitations):
+                    return textAndCitations.0  // Get the text part of the tuple
                 default:
                     return nil
                 }

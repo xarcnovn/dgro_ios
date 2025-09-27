@@ -60,7 +60,7 @@ struct ChatView: View {
                         .padding(.bottom, 8)
                     }
                     .scrollDismissesKeyboard(.interactively)
-                    .onChange(of: chatManager.messages.count) { _, _ in
+                    .onChange(of: chatManager.messages.count) { _ in
                         withAnimation {
                             if chatManager.isLoading {
                                 proxy.scrollTo("loading", anchor: .bottom)
@@ -82,24 +82,19 @@ struct ChatView: View {
             }
             .navigationTitle("MCP Chat")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingSettings = true
-                    }) {
-                        Image(systemName: "gear")
-                    }
+            .navigationBarItems(
+                leading: Button(action: {
+                    chatManager.clearMessages()
+                }) {
+                    Image(systemName: "trash")
                 }
-
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        chatManager.clearMessages()
-                    }) {
-                        Image(systemName: "trash")
-                    }
-                    .disabled(chatManager.messages.isEmpty)
+                .disabled(chatManager.messages.isEmpty),
+                trailing: Button(action: {
+                    showingSettings = true
+                }) {
+                    Image(systemName: "gear")
                 }
-            }
+            )
         }
         .sheet(isPresented: $showingSettings) {
             ServerConfigView()

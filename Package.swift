@@ -23,7 +23,7 @@ let package = Package(
             name: "MCPiOSClient",
             dependencies: [
                 .product(name: "SwiftAnthropic", package: "SwiftAnthropic"),
-                .product(name: "MCPClient", package: "mcp-swift-sdk"),
+                .product(name: "MCP", package: "mcp-swift-sdk"),
             ]),
         .testTarget(
             name: "MCPiOSClientTests",

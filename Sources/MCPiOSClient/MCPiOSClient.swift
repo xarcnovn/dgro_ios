@@ -8,7 +8,7 @@
 import Foundation
 
 // Re-export essential types and extensions
-@_exported import MCPClient
+@_exported import MCP
 @_exported import SwiftAnthropic
 
 // Type aliases for convenience

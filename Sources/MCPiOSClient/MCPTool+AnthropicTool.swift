@@ -6,16 +6,39 @@
 //
 
 import Foundation
-import MCPClient
+import MCP
 import SwiftAnthropic
 
 // MARK: - Anthropic conversions
 
-extension MCPClient {
+// Add helper for Value type
+extension Value {
+  init?(anyValue: Any) {
+    if let str = anyValue as? String {
+      self = .string(str)
+    } else if let bool = anyValue as? Bool {
+      self = .bool(bool)
+    } else if let int = anyValue as? Int {
+      self = .int(int)
+    } else if let double = anyValue as? Double {
+      self = .double(double)
+    } else if let dict = anyValue as? [String: Any] {
+      let values = dict.compactMapValues { Value(anyValue: $0) }
+      self = .object(values)
+    } else if let array = anyValue as? [Any] {
+      let values = array.compactMap { Value(anyValue: $0) }
+      self = .array(values)
+    } else {
+      return nil
+    }
+  }
+}
+
+extension Client {
 
   /// Returns an array of Anthropic tools by converting MCP tools.
   public func anthropicTools() async throws -> [MessageParameter.Tool] {
-    let tools = try await self.listTools()
+    let (tools, _) = try await self.listTools()
     return tools.compactMap { $0.anthropicTool() }
   }
 
@@ -23,48 +46,48 @@ extension MCPClient {
   /// - Parameters:
   ///   - name: The name of the tool to call
   ///   - arguments: The arguments to pass to the tool as an Encodable object
-  /// - Returns: The result of the tool call as an AnthropicMessage.Content
+  /// - Returns: The result of the tool call as ContentObject array
   /// - Throws: If the tool call fails or returns an error
-  public func anthropicCallTool<T: Encodable>(name: String, arguments: T) async throws -> MessageParameter.Message.Content {
-    let result = try await self.callTool(name: name, arguments: arguments)
+  public func anthropicCallTool<T: Encodable>(name: String, arguments: T) async throws -> [MessageParameter.Message.Content.ContentObject] {
+    // Convert arguments to Value dictionary
+    let data = try JSONEncoder().encode(arguments)
+    let json = try JSONSerialization.jsonObject(with: data)
+    let valueArgs = (json as? [String: Any]).map { dict in
+      dict.compactMapValues { Value(anyValue: $0) }
+    }
+
+    let result = try await self.callTool(name: name, arguments: valueArgs)
 
     // Check if result has isError flag
     if let isError = result.isError, isError {
-      throw MCPToolError.callFailed(result.content ?? [])
+      throw MCPToolError.callFailed(result.content)
     }
 
-    // Convert MCPToolCallResult.Content to AnthropicMessage.Content
-    return result.content?.compactMap { content in
+    // Convert Tool.Content to MessageParameter.Message.Content.ContentObject
+    return result.content.compactMap { content in
       switch content {
-      case .text(let textContent):
-        return .text(textContent.text)
-      case .image(let imageContent):
-        // Extract base64 from data URL if present
-        if let dataURL = imageContent.data,
-           dataURL.hasPrefix("data:"),
-           let base64Start = dataURL.range(of: ";base64,") {
-          let base64Data = String(dataURL[base64Start.upperBound...])
-          let mimeType = String(dataURL[dataURL.index(after: dataURL.startIndex)..<base64Start.lowerBound])
-            .replacingOccurrences(of: "data:", with: "")
-
-          return .image(.init(
-            type: .base64,
-            mediaType: mimeType,
-            data: base64Data,
-            detail: nil
-          ))
+      case .text(let text):
+        return .text(text)
+      case .image(let data, let mimeType, _):
+        // Convert to ImageSource for images - using default JPEG type
+        // Note: MCP doesn't specify image type, so we default to JPEG
+        let imageSource = MessageParameter.Message.Content.ImageSource(
+          type: .base64,
+          mediaType: .jpeg,
+          data: data
+        )
+        return .image(imageSource)
+      case .resource(_, _, let text):
+        // Convert resource to text representation if available
+        if let text = text {
+          return .text(text)
         }
         return nil
-      case .resource(let resourceContent):
-        // Convert resource to text representation
-        if let text = resourceContent.resource?.text {
-          return .text(text)
-        } else if let blob = resourceContent.resource?.blob {
-          return .text("Resource blob: \(blob)")
-        }
+      case .audio:
+        // Audio not supported in Anthropic messages
         return nil
       }
-    } ?? []
+    }
   }
 }
 
@@ -74,18 +97,21 @@ extension Tool {
 
     let inputSchema = self.inputSchema
 
-    // Parse the JSON schema
-    guard let schemaData = try? JSONSerialization.data(withJSONObject: inputSchema),
-          let schema = try? JSONDecoder().decode(JSONSchema.self, from: schemaData) else {
+    // Parse the JSON schema from Value to our intermediate type
+    guard let schemaData = try? JSONEncoder().encode(inputSchema),
+          let schemaJSON = try? JSONSerialization.jsonObject(with: schemaData),
+          let schemaDict = schemaJSON as? [String: Any],
+          let reencoded = try? JSONSerialization.data(withJSONObject: schemaDict),
+          let schema = try? JSONDecoder().decode(JSONSchema.self, from: reencoded) else {
       return nil
     }
 
     // Convert to Anthropic's input schema format
     let anthropicInputSchema = schema.toAnthropicInputSchema()
 
-    return MessageParameter.Tool(
+    return .function(
       name: self.name,
-      description: self.description ?? "",
+      description: self.description,
       inputSchema: anthropicInputSchema,
       cacheControl: nil
     )
@@ -101,26 +127,45 @@ struct JSONSchema: Codable {
   let description: String?
   let additionalProperties: Bool?
 
-  func toAnthropicInputSchema() -> MessageParameter.Tool.InputSchema {
-    var schemaDict: [String: Any] = ["type": "object"]
+  func toAnthropicInputSchema() -> SwiftAnthropic.JSONSchema {
+    // Convert our JSONSchema to SwiftAnthropic's JSONSchema
+    var props: [String: SwiftAnthropic.JSONSchema.Property]? = nil
 
     if let properties = properties {
-      var propsDict: [String: Any] = [:]
+      props = [:]
       for (key, prop) in properties {
-        propsDict[key] = prop.toDictionary()
+        // Create SwiftAnthropic Property - simplified conversion
+        let anthropicProp = SwiftAnthropic.JSONSchema.Property(
+          type: prop.type?.toAnthropicType() ?? .string,
+          description: prop.description,
+          format: prop.format,
+          items: nil,
+          required: prop.required,
+          pattern: prop.pattern,
+          const: nil,
+          enumValues: prop.enum,
+          multipleOf: nil,
+          minimum: prop.minimum,
+          maximum: prop.maximum,
+          minItems: nil,
+          maxItems: nil,
+          uniqueItems: nil
+        )
+        props?[key] = anthropicProp
       }
-      schemaDict["properties"] = propsDict
     }
 
-    if let required = required {
-      schemaDict["required"] = required
-    }
-
-    if let additionalProperties = additionalProperties {
-      schemaDict["additionalProperties"] = additionalProperties
-    }
-
-    return .init(schemaDict)
+    return SwiftAnthropic.JSONSchema(
+      type: .object,
+      properties: props,
+      required: required,
+      pattern: nil,
+      const: nil,
+      enumValues: nil,
+      multipleOf: nil,
+      minimum: nil,
+      maximum: nil
+    )
   }
 }
 
@@ -258,6 +303,18 @@ enum JSONSchemaType: String, Codable {
   case array
   case object
   case null
+
+  func toAnthropicType() -> SwiftAnthropic.JSONSchema.JSONType {
+    switch self {
+    case .string: return .string
+    case .number: return .number
+    case .integer: return .integer
+    case .boolean: return .boolean
+    case .array: return .array
+    case .object: return .object
+    case .null: return .null
+    }
+  }
 }
 
 // Helper type for handling any codable value
@@ -307,14 +364,14 @@ struct AnyCodable: Codable {
 // MARK: - Errors
 
 enum MCPToolError: LocalizedError {
-  case callFailed([MCPToolCallResult.Content])
+  case callFailed([Tool.Content])
 
   var errorDescription: String? {
     switch self {
     case .callFailed(let content):
       let errorTexts = content.compactMap { c -> String? in
-        if case .text(let textContent) = c {
-          return textContent.text
+        if case .text(let text) = c {
+          return text
         }
         return nil
       }
